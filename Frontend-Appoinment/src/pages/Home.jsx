@@ -6,6 +6,7 @@ import DOCTORS from "../data/mockDoctors";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { TopRatedSkeleton } from "../components/Skeletons";
+import placeholderImg from "../assets/doctors/placeholder.webp";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -80,7 +81,7 @@ export default function Home() {
                         width="300"
                         height="160"
                         onError={(e) => {
-                          e.target.src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&h=160&q=80";
+                          e.target.src = placeholderImg;
                         }}
                       />
                       <div className="p-3">

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import heroImg from '../assets/doctors/hero.webp'
+
 export default function Hero(){
   return (
     <section className="container mx-auto px-4 py-10">
@@ -13,11 +15,13 @@ export default function Hero(){
         </div>
         <div className="w-full md:w-1/3">
           <img 
-            src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80" 
+            src={heroImg} 
             alt="Hospital clinic lobby" 
-            className="rounded-xl shadow-md object-cover w-full h-56"
+            className="rounded-xl shadow-md object-cover w-full h-56 bg-gray-100"
             loading="eager"
             fetchPriority="high"
+            width="300"
+            height="224"
           />
         </div>
       </div>

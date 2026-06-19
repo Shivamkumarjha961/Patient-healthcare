@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import placeholderImg from "../assets/doctors/placeholder.webp";
 
 export default function DoctorCard({ doc }) {
   return (
@@ -12,7 +13,7 @@ export default function DoctorCard({ doc }) {
         width="112"
         height="112"
         onError={(e) => {
-          e.target.src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=112&h=112&q=80";
+          e.target.src = placeholderImg;
         }}
       />
       <div className="flex-1 min-w-0">

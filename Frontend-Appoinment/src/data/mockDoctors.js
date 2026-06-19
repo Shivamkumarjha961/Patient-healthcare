@@ -80,34 +80,15 @@ const DOCTORS = [
 
 ];
 
-const femaleImages = [
-  "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=250&h=250&q=80"
-];
-
-const maleImages = [
-  "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1637059824899-a441006a6875?auto=format&fit=crop&w=250&h=250&q=80",
-  "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=250&h=250&q=80"
-];
-
-const femaleNames = ["Anjali", "Nisha", "Meenakshi", "Priya", "Ritu", "Sneha", "Kavita", "Neha", "Sonal", "Pooja", "Vandana", "Meera", "Karishma", "Preeti", "Sanya", "Riddhi", "Shivani", "Prerna", "Suman", "Poonam", "Shruti", "Simran", "Ankita", "Ananya", "Meenal", "Kavita"];
+// Dynamically import all local WebP doctor profile images using Vite glob imports
+const doctorImages = import.meta.glob("../assets/doctors/doctor*.webp", { eager: true, import: "default" });
 
 const OPTIMIZED_DOCTORS = DOCTORS.map((doc, index) => {
-  const isFemale = femaleNames.some((name) => doc.name.includes(name));
-  const pool = isFemale ? femaleImages : maleImages;
-  // Use index to deterministically assign a unique image from the pool
-  const imgUrl = pool[index % pool.length];
+  const imageKey = `../assets/doctors/doctor${index + 1}.webp`;
+  const localUrl = doctorImages[imageKey] || doctorImages[`../assets/doctors/doctor1.webp`];
   return {
     ...doc,
-    img: imgUrl
+    img: localUrl
   };
 });
 
