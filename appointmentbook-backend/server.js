@@ -40,7 +40,8 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   : [
       "http://localhost:5173", // React/Vite local development
       "http://localhost:3000", // React/Next.js local development
-      "https://patient-healthcare.vercel.app" // Production Vercel domain (hyphenated)
+      "https://patient-healthcare.vercel.app", // Fallback production Vercel domain
+      "https://doctor-appointment-frontend-beige-xi.vercel.app" // Actual production Vercel frontend domain
     ];
 
 app.use(cors({
