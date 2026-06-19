@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function Auth() {
   const [tab, setTab] = useState("patientLogin");
 
-  // Doctor Login State
-  // const [doctorId, setDoctorId] = useState("");
-  // const [doctorPass, setDoctorPass] = useState("");
-
   // Patient Login State
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -20,19 +16,6 @@ export default function Auth() {
 
   const { login, signup } = useAuth();
   const navigate = useNavigate();
-
-  // Doctor Login
-  // const handleDoctorLogin = async () => {
-  //   try {
-  //     await login({
-  //       employeeId: doctorId,
-  //       password: doctorPass,
-  //     });
-  //     navigate("/");
-  //   } catch (err) {
-  //     alert(err.message);
-  //   }
-  // };
 
   // Patient Login
   const handlePatientLogin = async () => {
@@ -81,69 +64,6 @@ export default function Auth() {
           <h2 className="text-3xl font-extrabold text-center mb-6 text-indigo-700">
             Welcome to AppointmentBook
           </h2>
-
-          {/* TABS */}
-          {/* <div className="flex mb-6 border-b border-gray-300">
-            <button
-              onClick={() => setTab("doctorLogin")}
-              className={`w-1/3 py-2 text-center ${
-                tab === "doctorLogin"
-                  ? "border-b-2 border-indigo-600 font-semibold text-indigo-700"
-                  : "text-gray-600"
-              }`}
-            >
-              Doctor Login
-            </button>
-
-            <button
-              onClick={() => setTab("patientLogin")}
-              className={`w-1/3 py-2 text-center ${
-                tab === "patientLogin"
-                  ? "border-b-2 border-indigo-600 font-semibold text-indigo-700"
-                  : "text-gray-600"
-              }`}
-            >
-              Patient Login
-            </button>
-
-            <button
-              onClick={() => setTab("patientSignup")}
-              className={`w-1/3 py-2 text-center ${
-                tab === "patientSignup"
-                  ? "border-b-2 border-indigo-600 font-semibold text-indigo-700"
-                  : "text-gray-600"
-              }`}
-            >
-              Signup
-            </button>
-          </div>
-          //   Doctor Login 
-          {tab === "doctorLogin" && (
-            <div className="space-y-4">
-              <input
-                type="text"
-                placeholder="Employee ID"
-                value={doctorId}
-                onChange={(e) => setDoctorId(e.target.value)}
-                className="w-full border p-2 rounded"
-              />
-
-              <input
-                type="password"
-                placeholder="Password"
-                value={doctorPass}
-                onChange={(e) => setDoctorPass(e.target.value)}
-                className="w-full border p-2 rounded"
-              />
-
-              <button
-                onClick={handleDoctorLogin}
-                className="w-full bg-indigo-600 text-white py-2 rounded-lg"
-              >
-                Login as Doctor
-              </button>
-            </div>
-          )} */}
 
           {/* ---------------- PATIENT LOGIN ---------------- */}
           {tab === "patientLogin" && (

@@ -226,22 +226,33 @@ export default function Home() {
 
             {/* NEWSLETTER */}
             <div className="card">
-              <h4 className="font-semibold text-lg p-1">Subscribe for Updates</h4>
-              <p className="text-sm text-gray-600 mt-2">Get latest offers & health tips</p>
-              <input
-                type="email"
-                className="mt-3 w-full border p-2 rounded"
-                placeholder="Enter your email"
-              />
-              <button className="mt-3 w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700">
-                Subscribe
-              </button>
+  <div className="flex items-center gap-3 mb-3">
+    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-purple-100 text-2xl">
+      💡
+    </div>
+
+    <div>
+      <h3 className="font-semibold text-lg">
+        Health Tips of the Day
+      </h3>
+      <p className="text-sm text-gray-500">
+        Stay healthy with simple daily habits
+      </p>
+    </div>
+  </div>
+
+  <div className="bg-purple-50 rounded-lg p-2 mb-3">
+  <p className="text-gray-700 text-sm leading-relaxed">
+  💧 Stay hydrated, eat healthy meals, exercise regularly,
+  and get 7–8 hours of sleep. Small daily habits can
+  improve your overall health and well-being.
+</p>
+</div>
             </div>
 
           </aside>
         </div>
       </section>
-
 
        <Footer/>
     </>

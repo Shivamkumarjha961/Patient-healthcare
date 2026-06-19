@@ -14,7 +14,7 @@ export default function MyAppointments() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/appointments/mine",
+          `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments/mine`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -42,7 +42,7 @@ export default function MyAppointments() {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        `http://localhost:5000/api/appointments/cancel/${selectedId}`,
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments/cancel/${selectedId}`,
         {
           method: "DELETE",
           headers: {

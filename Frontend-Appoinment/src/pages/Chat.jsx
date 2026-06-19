@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
 // -------- CONFIG --------
-const API_KEY = "AIzaSyClRJVFkK1nBPVMQ984ZsHzlCOUcuZe7YY"; // your key
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 const MODEL = "gemini-2.5-flash";
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent?key=${API_KEY}`;
-// ------------------------
+
 
 export default function MedicalAssistantChatbot() {
   const [messages, setMessages] = useState([
@@ -47,7 +47,6 @@ export default function MedicalAssistantChatbot() {
 
     return output;
   }
-  // --------------------------------------------------------
 
   // Send message handler
   const sendMessage = async (e) => {
@@ -60,9 +59,20 @@ export default function MedicalAssistantChatbot() {
     setLoading(true);
 
     try {
-      const reply = await callGemini(
-        `You are a medical assistant. Give helpful guidance, but add a disclaimer you are not a doctor.\nUser: ${userMsg.text}`
-      );
+      const reply = await callGemini(`
+        You are a medical assistant.
+
+        Rules:
+        - Keep every response between 200 and 300 characters only.
+        - Give a short and clear answer.
+        - Mention possible causes briefly.
+        - Suggest basic self-care if appropriate.
+        - Add a very short disclaimer at the end.
+        - Do not write long paragraphs.
+        - Use simple language.
+
+        User: ${userMsg.text}
+      `);
 
       const botMsg = { from: "assistant", text: reply };
       setMessages((prev) => [...prev, botMsg]);
@@ -99,7 +109,6 @@ export default function MedicalAssistantChatbot() {
               Health info assistant — not a medical professional.
             </p>
           </div>
-          {/* <span className="ml-auto text-xs text-slate-400">Model: {MODEL}</span> */}
         </div>
 
         {/* Chat Area */}
@@ -148,15 +157,13 @@ export default function MedicalAssistantChatbot() {
           <div className="mt-3 flex gap-2">
             <button
               onClick={() => quickAsk("I have fever and cough. What should I do?")}
-              className="px-3 py-1 bg-slate-100 rounded"
-            >
+              className="px-3 py-1 bg-slate-100 rounded">
               Fever + Cough
             </button>
 
             <button
               onClick={() => quickAsk("I have headache and nausea.")}
-              className="px-3 py-1 bg-slate-100 rounded"
-            >
+              className="px-3 py-1 bg-slate-100 rounded">
               Headache
             </button>
 

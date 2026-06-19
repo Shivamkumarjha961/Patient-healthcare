@@ -1,8 +1,13 @@
 import Footer from "../components/Footer";
 import Chat from "./Chat";
+import { useEffect } from "react";
 export default function HealthTools() {
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
+    
    <section className="container mx-auto px-6 py-12">
   {/* Heading */}
   <h2 className="text-4xl font-bold text-center text-gray-800 mb-12 tracking-wide">
@@ -148,7 +153,6 @@ export default function HealthTools() {
 
   </div>
 </section>
-
 
           <Chat/>
     <Footer/>
