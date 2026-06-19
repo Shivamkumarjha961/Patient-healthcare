@@ -6,6 +6,9 @@ const User = require("../models/User");
 const router = express.Router();
 
 function createToken(user) {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is missing.");
+  }
   return jwt.sign(
     { id: user._id, name: user.name, role: user.role },
     process.env.JWT_SECRET,
@@ -13,47 +16,86 @@ function createToken(user) {
   );
 }
 
+// Signup route for Patients
 router.post("/signup", async (req, res) => {
   try {
     const { name, phone, password } = req.body;
-    if (!name || !phone || !password)
+    
+    // Validate required fields
+    if (!name || !phone || !password) {
       return res.status(400).json({ error: "Missing fields" });
+    }
 
-    const exists = await User.findOne({ phone });
-    if (exists) return res.status(400).json({ error: "Phone already exists" });
+    // Validate phone number format (must be exactly 10 digits)
+    const cleanPhone = phone.trim();
+    if (!/^\d{10}$/.test(cleanPhone)) {
+      return res.status(400).json({ error: "Phone number must be exactly 10 digits" });
+    }
 
+    // Check if phone number already exists
+    const exists = await User.findOne({ phone: cleanPhone });
+    if (exists) {
+      return res.status(409).json({ error: "Phone already exists" });
+    }
+
+    // Hash password and save new patient
     const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      name,
-      phone,
+      name: name.trim(),
+      phone: cleanPhone,
       role: "patient",
       passwordHash: hash
     });
 
     const token = createToken(user);
-    res.json({ message: "Signup success", token, user });
+    
+    // Ensure passwordHash is never returned in client response
+    const userResponse = user.toObject();
+    delete userResponse.passwordHash;
+
+    return res.status(201).json({ message: "Signup success", token, user: userResponse });
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    console.error("Signup error:", err);
+    return res.status(500).json({ error: "Server error" });
   }
 });
 
+// Login route for both Patients and Doctors
 router.post("/login", async (req, res) => {
   try {
     const { employeeId, phone, password } = req.body;
+
+    if ((!employeeId && !phone) || !password) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
     let user;
+    if (employeeId) {
+      user = await User.findOne({ employeeId: employeeId.trim(), role: "doctor" });
+    } else if (phone) {
+      const cleanPhone = phone.trim();
+      user = await User.findOne({ phone: cleanPhone, role: "patient" });
+    }
 
-    if (employeeId) user = await User.findOne({ employeeId, role: "doctor" });
-    else if (phone) user = await User.findOne({ phone, role: "patient" });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    if (!user) return res.status(400).json({ error: "User not found" });
-
-    const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ error: "Wrong password" });
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Wrong password" });
+    }
 
     const token = createToken(user);
-    res.json({ message: "Login success", token, user });
+
+    // Strip passwordHash before response
+    const userResponse = user.toObject();
+    delete userResponse.passwordHash;
+
+    return res.json({ message: "Login success", token, user: userResponse });
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    console.error("Login error:", err);
+    return res.status(500).json({ error: "Server error" });
   }
 });
 
