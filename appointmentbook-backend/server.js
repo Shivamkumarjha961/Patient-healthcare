@@ -35,14 +35,17 @@ app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 // Dynamic CORS Configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
-  : [
-      "http://localhost:5173", // React/Vite local development
-      "http://localhost:3000", // React/Next.js local development
-      "https://patient-healthcare.vercel.app", // Fallback production Vercel domain
-      "https://doctor-appointment-frontend-beige-xi.vercel.app" // Actual production Vercel frontend domain
-    ];
+let allowedOrigins = [
+  "http://localhost:5173", // React/Vite local development
+  "http://localhost:3000", // React/Next.js local development
+  "https://patient-healthcare.vercel.app", // Fallback production Vercel domain
+  "https://doctor-appointment-frontend-beige-xi.vercel.app" // Actual production Vercel frontend domain
+];
+
+if (process.env.ALLOWED_ORIGINS) {
+  const envOrigins = process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim());
+  allowedOrigins = [...new Set([...allowedOrigins, ...envOrigins])];
+}
 
 app.use(cors({
   origin: (origin, callback) => {
