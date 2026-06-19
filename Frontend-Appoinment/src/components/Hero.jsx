@@ -12,7 +12,13 @@ export default function Hero(){
           </div>
         </div>
         <div className="w-full md:w-1/3">
-          <img src="https://wallpaperaccess.com/full/4113310.jpg" alt="Hospital image" className="rounded-xl shadow-md object-cover w-full h-56"/>
+          <img 
+            src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80" 
+            alt="Hospital clinic lobby" 
+            className="rounded-xl shadow-md object-cover w-full h-56"
+            loading="eager"
+            fetchPriority="high"
+          />
         </div>
       </div>
     </section>

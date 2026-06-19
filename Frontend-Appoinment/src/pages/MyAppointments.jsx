@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { AppointmentsSkeleton } from "../components/Skeletons";
 
 export default function MyAppointments() {
   const [appts, setAppts] = useState([]);
@@ -67,7 +68,16 @@ export default function MyAppointments() {
     }
   }
 
-  if (loading) return <p className="p-4">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto p-4">
+        <h2 className="text-3xl font-semibold mb-4 text-green-600">
+          My Appointments
+        </h2>
+        <AppointmentsSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-4 relative">

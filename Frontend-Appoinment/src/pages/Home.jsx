@@ -1,11 +1,20 @@
+import React, { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import CategoryChips from "../components/CategoryChips";
 import TestimonialSlider from "../components/TestimonialSlider";
 import DOCTORS from "../data/mockDoctors";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
+import { TopRatedSkeleton } from "../components/Skeletons";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const topRated = DOCTORS.sort((a, b) => b.rating - a.rating).slice(0, 6);
   const popularSpecialties = [
     "Cardiology",
@@ -54,27 +63,41 @@ export default function Home() {
             <div className="card">
               <h3 className="text-xl font-semibold mb-4">Top Rated Doctors</h3>
 
-              <div className="grid md:grid-cols-3 gap-4">
-                {topRated.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="rounded-xl shadow hover:shadow-lg transition border overflow-hidden bg-white"
-                  >
-                    <img src={doc.img} className="w-full h-40 object-cover" alt={doc.name} />
-                    <div className="p-3">
-                      <div className="font-semibold">{doc.name}</div>
-                      <div className="text-sm text-gray-600">{doc.specialization}</div>
-                      <div className="text-yellow-500 font-medium mt-1">⭐ {doc.rating}</div>
-                      <Link
-                        to={`/doctor/${doc.id}`}
-                        className="block w-full mt-3 bg-indigo-600 text-white py-1.5 rounded text-center text-sm hover:bg-indigo-700"
-                      >
-                        View Profile
-                      </Link>
+              {loading ? (
+                <TopRatedSkeleton />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {topRated.map((doc) => (
+                    <div
+                      key={doc.id}
+                      className="rounded-xl shadow hover:shadow-lg transition-transform hover:-translate-y-0.5 duration-200 border overflow-hidden bg-white"
+                    >
+                      <img 
+                        src={doc.img} 
+                        className="w-full h-40 object-cover bg-gray-100" 
+                        alt={doc.name} 
+                        loading="lazy"
+                        width="300"
+                        height="160"
+                        onError={(e) => {
+                          e.target.src = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&h=160&q=80";
+                        }}
+                      />
+                      <div className="p-3">
+                        <div className="font-semibold text-gray-900">{doc.name}</div>
+                        <div className="text-sm text-gray-600">{doc.specialization}</div>
+                        <div className="text-yellow-500 font-medium mt-1">⭐ {doc.rating}</div>
+                        <Link
+                          to={`/doctor/${doc.id}`}
+                          className="block w-full mt-3 bg-indigo-600 text-white py-1.5 rounded text-center text-sm hover:bg-indigo-700 transition"
+                        >
+                          View Profile
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* HOW IT WORKS */}
