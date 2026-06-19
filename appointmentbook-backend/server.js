@@ -36,12 +36,11 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 // Dynamic CORS Configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
+  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
   : [
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "https://patient_healthcare.vercel.app",
-      "https://patient-healthcare.vercel.app"
+      "http://localhost:5173", // React/Vite local development
+      "http://localhost:3000", // React/Next.js local development
+      "https://patient-healthcare.vercel.app" // Production Vercel domain (hyphenated)
     ];
 
 app.use(cors({
@@ -49,7 +48,7 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes("*")) {
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
       return callback(null, true);
     }
     return callback(new Error("Not allowed by CORS"), false);
