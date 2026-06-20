@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Hero from "../components/Hero";
 import CategoryChips from "../components/CategoryChips";
 import TestimonialSlider from "../components/TestimonialSlider";
 import DOCTORS from "../data/mockDoctors";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import { TopRatedSkeleton } from "../components/Skeletons";
 import placeholderImg from "../assets/doctors/placeholder.webp";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const topRated = DOCTORS.sort((a, b) => b.rating - a.rating).slice(0, 6);
   const popularSpecialties = [
@@ -64,10 +57,7 @@ export default function Home() {
             <div className="card">
               <h3 className="text-xl font-semibold mb-4">Top Rated Doctors</h3>
 
-              {loading ? (
-                <TopRatedSkeleton />
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {topRated.map((doc) => (
                     <div
                       key={doc.id}
@@ -98,7 +88,6 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              )}
             </div>
 
             {/* HOW IT WORKS */}

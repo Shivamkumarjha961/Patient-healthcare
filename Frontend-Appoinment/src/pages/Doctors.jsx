@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DOCTORS from "../data/mockDoctors";
 import DoctorCard from "../components/DoctorCard";
 import Filters from "../components/Filters";
-import { DoctorsPageSkeleton } from "../components/Skeletons";
 
 export default function Doctors() {
   const [spec, setSpec] = useState("");
   const [sort, setSort] = useState("rating");
   const [minExp, setMinExp] = useState(""); // ALWAYS NUMBER
   const [view, setView] = useState("grid");
-  const [loading, setLoading] = useState(true);
-
-  // Simulate data fetching delay on mount to demonstrate skeleton loaders
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   // ---------- SAFE FILTERING ----------
   let list = DOCTORS.filter((d) =>
@@ -47,55 +36,49 @@ export default function Doctors() {
         </div>
       </div>
 
-      {loading ? (
-        <DoctorsPageSkeleton />
-      ) : (
-        <>
-          {/* FILTERS */}
-          <Filters
-            spec={spec}
-            setSpec={setSpec}
-            sort={sort}
-            setSort={setSort}
-            minExp={minExp}
-            setMinExp={(val) => setMinExp(Number(val))} // ALWAYS NUMBER
-          />
+      {/* FILTERS */}
+      <Filters
+        spec={spec}
+        setSpec={setSpec}
+        sort={sort}
+        setSort={setSort}
+        minExp={minExp}
+        setMinExp={(val) => setMinExp(Number(val))} // ALWAYS NUMBER
+      />
 
-          {/* DOCTOR LIST */}
-          {list.length === 0 ? (
-            <div className="card text-center py-12 mt-4 text-gray-500">
-              No doctors match the selected criteria.
-            </div>
-          ) : (
-            <div className={view === "grid" ? "grid gap-4 mt-4" : "flex flex-col gap-3 mt-4"}>
-              {list.map((d) =>
-                view === "grid" ? (
-                  <DoctorCard key={d.id} doc={d} />
-                ) : (
-                  <div
-                    key={d.id}
-                    className="card flex items-center justify-between hover:shadow-md transition-shadow duration-200"
-                  >
-                    <div>
-                      <div className="font-semibold text-gray-900">{d.name}</div>
-                      <div className="text-sm text-gray-600">
-                        {d.specialization} • {d.experience} yrs exp • ₹{d.fees}
-                      </div>
-                    </div>
-                    <div>
-                      <a
-                        href={"/doctor/" + d.id}
-                        className="px-3 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 text-sm font-semibold rounded-lg transition-colors"
-                      >
-                        View
-                      </a>
-                    </div>
+      {/* DOCTOR LIST */}
+      {list.length === 0 ? (
+        <div className="card text-center py-12 mt-4 text-gray-500">
+          No doctors match the selected criteria.
+        </div>
+      ) : (
+        <div className={view === "grid" ? "grid gap-4 mt-4" : "flex flex-col gap-3 mt-4"}>
+          {list.map((d) =>
+            view === "grid" ? (
+              <DoctorCard key={d.id} doc={d} />
+            ) : (
+              <div
+                key={d.id}
+                className="card flex items-center justify-between hover:shadow-md transition-shadow duration-200"
+              >
+                <div>
+                  <div className="font-semibold text-gray-900">{d.name}</div>
+                  <div className="text-sm text-gray-600">
+                    {d.specialization} • {d.experience} yrs exp • ₹{d.fees}
                   </div>
-                )
-              )}
-            </div>
+                </div>
+                <div>
+                  <a
+                    href={"/doctor/" + d.id}
+                    className="px-3 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 text-sm font-semibold rounded-lg transition-colors"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+            )
           )}
-        </>
+        </div>
       )}
     </section>
   );
