@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import { Routes, Route } from 'react-router-dom'
 import RouteLoading from './components/RouteLoading'
 import { ShimmerStyles } from './components/Skeletons'
@@ -14,11 +15,11 @@ const Auth = React.lazy(() => import('./pages/Auth'))
 
 export default function App() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <ShimmerStyles />
       <Header />
       
-      <main className="min-h-[60vh] bg-gray-50 pb-12">
+      <main className="flex-grow bg-gray-50 pb-12">
         <Suspense fallback={<RouteLoading />}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -30,6 +31,8 @@ export default function App() {
           </Routes>
         </Suspense>
       </main>
-    </>
+
+      <Footer />
+    </div>
   )
 }

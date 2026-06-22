@@ -4,7 +4,7 @@ import CategoryChips from "../components/CategoryChips";
 import TestimonialSlider from "../components/TestimonialSlider";
 import DOCTORS from "../data/mockDoctors";
 import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
+
 import placeholderImg from "../assets/doctors/placeholder.webp";
 
 export default function Home() {
@@ -266,8 +266,6 @@ export default function Home() {
           </aside>
         </div>
       </section>
-
-       <Footer/>
     </>
   );
 }

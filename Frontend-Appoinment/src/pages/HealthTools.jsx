@@ -1,4 +1,4 @@
-import Footer from "../components/Footer";
+
 import Chat from "./Chat";
 import { useEffect } from "react";
 export default function HealthTools() {
@@ -155,7 +155,6 @@ export default function HealthTools() {
 </section>
 
           <Chat/>
-    <Footer/>
     </>
   );
 }
